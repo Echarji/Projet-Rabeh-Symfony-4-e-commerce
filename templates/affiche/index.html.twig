@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #customers {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+    <style>
+        .button { 
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .button5 {
+         background-color: #4CAF50; /* Green */
+     }
+        .button2 {
+            background-color: #008CBA;
+        }
+    
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+    
+        /* Red */
+        </style>
+</head>
+
+<body>
+<br><br>
+    <table id="customers">
+        <tr>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Cout</th>
+            <th>Remise</th>
+            <th>Image</th>
+            <th>Categorie</th>
+            <th> </th>
+            <th> </th>
+        </tr>
+        {% for livre in tlivre %}
+        <tr>
+            <td>{{livre.nom}}</td>
+            <td>{{livre.description}}</td>
+            <td>{{livre.cout1}}</td>
+            <td>{{livre.remise}}</td>
+            <td>{{livre.image}}</td>
+            {% for Categories in Categorie %}
+            {%if(Categories.id ==livre.getIdCategori.getId  )%}
+            <td>{{Categories.nom}}</td>
+            {% endif %}
+            {% endfor %}
+            <td><button class="button button2"><a href="{{path('Modifier',{'id':livre.id})}}">Modifier</a></button></td>
+            <td><button class="button button3"><a href="{{path('remove',{'id':livre.id})}}">Supprimer</a></button></td>
+        </tr>
+        {% endfor %} 
+
+    </table>
+ 
+<h1>Ajouter un Livre</h1>
+
+<div class="contact_form">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="contact_form_container">
+                    <div class="contact_form_title"></div>
+
+                    {{form_start(f)}}
+                <div class="contact_form_inputs d-flex flex-md-row flex-column justify-content-between align-items-between">
+
+                        {{form_row(f.nom, { 'attr': { 'id': 'contact_form_name'  ,  'class': 'contact_form_name input_field' ,'placeholder': 'nom' , 'required':'required', 'data-error':'name is required.' , 'size':'70'} })  }}
+                    <br>
+                        {{form_row(f.description, { 'attr': { 'id': 'contact_form_email'  ,  'class': 'contact_form_email input_field' ,'placeholder': 'description' , 'required':'required', 'data-error':'Email is required.', 'size':'70'} })  }}
+                    <br>    
+                        {{form_row(f.cout1, { 'attr': { 'id': 'contact_form_phone'  ,  'class': 'contact_form_phone input_field' ,'placeholder': 'cout' , 'required':'required', 'size':'70' } })  }}
+                    <br>
+                    {{form_row(f.remise, { 'attr': {   'class': 'text_field contact_form_message' ,'placeholder': 'remise' , 'required':'required', 'data-error':'Please, write us a message.'} })  }}
+                    <br>
+                        {{form_row(f.id_categori )  }}
+                        <br>
+                    {{form_row(f.image) }}
+
+
+                     <br>
+                        
+                 
+                        {{form_row(f.Valider, { 'attr': {     'class': 'button button5'   } })  }}
+                     
+                    {{form_end(f)}}
+
+
+                     
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel"></div>
+</div>
+    
+
+</body>
+
+</html>

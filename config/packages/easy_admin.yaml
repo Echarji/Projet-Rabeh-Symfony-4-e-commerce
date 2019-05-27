@@ -1,0 +1,24 @@
+easy_admin:
+    entities: 
+        user:
+            class: App\Entity\user
+        Categorie:
+            class: App\Entity\Categorie
+            form:
+                fields:
+                - {property: "nom"}
+                - {property: "description"}
+                - {property: "image"}
+                - {property: "created_at"}
+        
+        Livre:
+            class: App\Entity\Livre
+        Contact:
+            class: App\Entity\Contact
+        Footer:
+            class: App\Entity\Footer
+        
+        
+        
+
+ 
