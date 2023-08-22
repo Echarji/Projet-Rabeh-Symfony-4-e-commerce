@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SONAR_SCANNER_HOME = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        SCANNER_HOME = tool 'sonar'
     }
 
     stages {
@@ -18,20 +18,15 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool name: 'sonar', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    
                     
                     withSonarQubeEnv('SonarQubeScanner') {
-                        sh " export SONAR_SCANNER_VERSION=4.7.0.2747 \
-                        && export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux \
-                        && curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip \
-                        && unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/ \
-                        && export PATH=$SONAR_SCANNER_HOME/bin:$PATH \
-                        && export SONAR_SCANNER_OPTS="-server" "
-                        sh "sonar:sonar \
+                        
+                        sh '''$SCANNER_HOME/bin/sonar-scanner \
                             -Dsonar.projectKey=test \
                             -Dsonar.sources=. \
                             -Dsonar.token=sqp_1a341187f95d687d3159efdca70aaa5a7733c06f\
-                            -Dsonar.host.url=http://localhost:9000" 
+                            -Dsonar.host.url=http://localhost:9000 '''
                     }
                 }
             }
