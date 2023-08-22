@@ -29,10 +29,5 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Clean up after the pipeline finishes
-            deleteDir()
-        }
-    }
+    
 }
