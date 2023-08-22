@@ -18,11 +18,17 @@ pipeline {
 
                     echo "Incremented version: ${currentVersion} -> ${newVersion}"
                     echo "Image name: ${env.IMAGE_NAME}"
+
+                    // Add and commit the updated version file
+                    sh "git config --global user.email 'jenkins@example.com'"
+                    sh "git config --global user.name 'Jenkins CI'"
+                    sh "git add ${versionFile}"
+                    sh "git commit -m 'Increment version to ${newVersion}'"
                 }
             }
         }
     }
-    
+
     post {
         always {
             // Clean up after the pipeline finishes
