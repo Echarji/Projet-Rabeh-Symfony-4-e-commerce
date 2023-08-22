@@ -22,7 +22,7 @@ pipeline {
                     
                     withSonarQubeEnv('SonarQubeScanner') {
                         
-                        sh "sonar-scanner \
+                        sh "sonar:sonar \
                             -Dsonar.projectKey=test \
                             -Dsonar.sources=. \
                             -Dsonar.token=sqp_1a341187f95d687d3159efdca70aaa5a7733c06f\
