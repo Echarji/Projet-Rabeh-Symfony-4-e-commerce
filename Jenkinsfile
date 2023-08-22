@@ -2,33 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Increment Version and Commit') {
+        stage('Increment Version') {
             steps {
                 script {
                     def versionFile = 'version.txt'
                     def currentVersion = readFile(versionFile).trim()
-                    def newVersion = currentVersion.split('\\.').collect { it.toInteger() }
-                    newVersion[2]++
-                    newVersion = newVersion.join('.')
+                    def versionParts = currentVersion.split('\\.').collect { it.toInteger() }
+
+                    versionParts[2]++ // Increment patch version
+
+                    def newVersion = versionParts.join('.')
                     writeFile file: versionFile, text: newVersion
 
-                    sh "git config --global user.email 'jenkins@example.com'"
-                    sh "git config --global user.name 'Jenkins CI'"
-                    sh "git add ${versionFile}"
-                    sh "git commit -m 'Increment version to ${newVersion}'"
+                    env.IMAGE_NAME = "${newVersion}-${BUILD_NUMBER}"
+
+                    echo "Incremented version: ${currentVersion} -> ${newVersion}"
+                    echo "Image name: ${env.IMAGE_NAME}"
                 }
             }
         }
-
-        
     }
-
+    
     post {
         always {
             // Clean up after the pipeline finishes
