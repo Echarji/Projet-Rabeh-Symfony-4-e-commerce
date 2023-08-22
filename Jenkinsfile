@@ -8,7 +8,7 @@ pipeline {
             }
         }
 
-        stage('Increment Version') {
+        stage('Increment Version and Commit') {
             steps {
                 script {
                     def versionFile = 'version.txt'
@@ -17,7 +17,11 @@ pipeline {
                     newVersion[2]++
                     newVersion = newVersion.join('.')
                     writeFile file: versionFile, text: newVersion
-                    env.IMAGE_VERSION = newVersion // Store the version for later use
+
+                    sh "git config --global user.email 'jenkins@example.com'"
+                    sh "git config --global user.name 'Jenkins CI'"
+                    sh "git add ${versionFile}"
+                    sh "git commit -m 'Increment version to ${newVersion}'"
                 }
             }
         }
@@ -25,5 +29,10 @@ pipeline {
         
     }
 
-   
+    post {
+        always {
+            // Clean up after the pipeline finishes
+            deleteDir()
+        }
+    }
 }
