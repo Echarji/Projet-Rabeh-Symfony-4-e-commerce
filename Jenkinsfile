@@ -1,42 +1,29 @@
 pipeline {
     agent any
-    
-    environment {
-        SCANNER_HOME = tool 'sonar'
-    }
 
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    checkout scm
-                }
+                checkout scm
             }
         }
-        
-        
-        stage('SonarQube Analysis') {
+
+        stage('Increment Version') {
             steps {
                 script {
-                    
-                    
-                    withSonarQubeEnv('SonarQubeScanner') {
-                        
-                        sh '''$SCANNER_HOME/bin/sonar-scanner \
-                            -Dsonar.projectKey=test \
-                            -Dsonar.sources=. \
-                            -Dsonar.token=sqp_1a341187f95d687d3159efdca70aaa5a7733c06f\
-                            -Dsonar.host.url=http://sonarqube:9000 '''
-                    }
+                    def versionFile = 'version.txt'
+                    def currentVersion = readFile(versionFile).trim()
+                    def newVersion = currentVersion.split('\\.').collect { it.toInteger() }
+                    newVersion[2]++
+                    newVersion = newVersion.join('.')
+                    writeFile file: versionFile, text: newVersion
+                    env.IMAGE_VERSION = newVersion // Store the version for later use
                 }
             }
         }
+
+        
     }
-    
-    post {
-        always {
-            // Clean up after the pipeline finishes
-            deleteDir()
-        }
-    }
+
+   
 }
